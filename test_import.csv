@@ -1,0 +1,6 @@
+Full Name,Email,Phone,Team Name,Role,Password
+Admin User,test.admin@example.com,1234567890,General,Admin,Password123
+TL User,test.tl@example.com,1234567890,Sales,Team Leader,Password123
+Faculty User,test.faculty@example.com,1234567890,Academics,Faculty,Password123
+Member User,test.member@example.com,1234567890,Tech,Member,Password123
+CA User,test.ca@example.com,1234567890,Marketing,Campus Ambassador,Password123
