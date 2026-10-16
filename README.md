@@ -24,43 +24,6 @@ Beyond task allocation and volunteer tracking, a vital component of this platfor
 
 The communication backbone of Lakshya 2.0 was engineered to solve high-volume, multi-committee notification challenges, featuring rate-limited batching, dynamic recipient filtering, multi-transport support, and strict role authorization.
 
-```mermaid
-flowchart TD
-    subgraph AdminControl["Admin Bulk Email Console"]
-        UI[Dynamic Audience Selector: Roles & Committees]
-        PreviewAPI[Live Target Preview: GET /api/emails/preview-targets]
-        TemplateEngine[Responsive HTML Template Engine]
-        UI --> PreviewAPI
-        UI --> TemplateEngine
-    end
-
-    subgraph BackendGateway["Express API Gateway & Security"]
-        AuthMiddleware[RBAC Guard: requireRole('admin')]
-        Controller[POST /api/emails/send-bulk]
-        AuthMiddleware --> Controller
-    end
-
-    subgraph DispatchEngine["Rate-Limited Batch Mailer (resendMailer.js)"]
-        Batcher[sendBatchEmails Worker]
-        Throttler[Rate Limiter: 700-900ms Jitter Interval]
-        RetryHandler[Retry Handler: HTTP 429 Exponential Backoff]
-        AuditLogger[Audit Logger & Delivery Summary]
-        
-        Batcher --> Throttler
-        Throttler --> RetryHandler
-        RetryHandler --> AuditLogger
-    end
-
-    subgraph ExternalTransports["Email Gateways"]
-        ResendAPI[Resend API: noreply@mail.lakshya-mngt.online]
-        NodemailerSMTP[Nodemailer: Institutional SMTP Fallback]
-    end
-
-    UI --> AuthMiddleware
-    Controller --> DispatchEngine
-    RetryHandler --> ResendAPI
-    RetryHandler -.-> NodemailerSMTP
-```
 
 ### 1. Dual-Transport Engine & Fallback Mechanism
 - **Resend API Integration:** Primary high-deliverability transport configured with a dedicated sending domain (`noreply@mail.lakshya-mngt.online`) utilizing `@resend/node`.
